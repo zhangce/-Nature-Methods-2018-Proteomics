@@ -6,52 +6,58 @@
 %% make sure you have the nature.cls and naturemag.bst files where
 %% LaTeX can find them
 \bibliographystyle{naturemag}
-\title{Challenges in LC/MS--based Proteomics}% less than 90 characters
+\title{\large Computational Challenges in SWATH--MS based Proteomics}% less than 90 characters
 %% Notice placement of commas and superscripts and use of &
 %% in the author list
-%\author{Aauthor$^{1,2}$, Bauthor$^2$ \& LastAuthor$^2$}
+\author{ }
+%\author{Nezihe Merve G\"{u}rel, Tiannan Guo, Ce Zhang}
 \begin{document}
 \maketitle
 \begin{enumerate}
-    {\bf \item Instrumental Noise in Liquid Chromatography/Mass Spectrometer}\\
-    In the nomenclature of MS, electronic (usually due to Analog-to-Digital converters), neutral and chemical noise that takes its source from the procedures undertaken corrupts the total signal in the measurement window, hence creating significant background artifacts in MS and MS/MS spectrum. That can potentially redeem the proteins that occupy smaller percentage in a mixture thus hindering their identification. To tackle with this, (1) establishing a noise model (by exploiting MS and/or MS/MS outputs in response to a blank input), and (2) explicit mathematical treatment of noise, i.e., de-noising of MS and MS/MS spectrum, stand as technical challenges.
+    {\bf \item Instrumental Noise in SWATH--MS Maps}\\
+    Electronic (usually due to Analog-to-Digital converters), neutral and chemical noise, that takes its source from the undertaken procedures, corrupt total signal displayed in the individual SWATH--MS maps, hence creating significant background artifacts. This can potentially redeem the proteins that occupy smaller percentage in the mixture thus hindering their identification. To tackle with this, (1) establishing a noise model (by exploiting SWATH maps in response to a blank input), and (2) explicit mathematical treatment of noise, i.e., de-noising of SWATH maps, stand as important technical challenges.
     
     {\bf \item Chromatographic Distortions}\\
-    Many factors such as presence of contaminants, low signal-to-noise ratio, the integration of fragment ion counts over a certain cycle followed by convolution and smoothing operations leads significant distortion in the chromatograms. The weak and/or two closely located features, therefore, are difficult to detect. To overcome this, a more sophisticated method to produce chromatographic data, i.e., extracted ion chromatograms (XIC) of the transitions of a peptide generated from all corresponding MS2 spectra, is demanded. 
+    Many factors such as presence of contaminants, low signal-to-noise ratio, the integration of multiple fragment ion counts over an {\it m/z} range followed by convolution and smoothing operations leads significant distortion in the chromatograms, yet the loss of information to detect weak and/or two closely located features results. To overcome this, a more advanced methodology to generate the extracted ion chromatograms (XIC) of the transitions of a peptide from the SWATH--MS maps is demanded by the current workflow.
+    %Precise to me what to do, like decreasing m/z range while integration takes place, but more importantly better convolution and smoothing functions --we will not create chromatograms anways--
+    
+    {\bf \item Calibration of Peptide Assay Library}\\
+    Peptide library contains a structured combination of aminoacid in the form of peptide synthesis. Constitution of the assay library is based on a simple experimental procedure, i.e., averaging the parameters such as respective fragment intensities, normalized retention time, fragment ion mass that describe peptide characteristics over many runs, thus inducing significant prediction error. Instead, playing indispensable role in proteome analysis, the assay library required calibration using a precise statistical model.
     
     
     {\bf \item Retention Time Alignment}\\
-    To relieve the exhaustive search for the targeted peptide over the entire chromatographic space, the retention time of peptides within each gradient is evaluated, thus restricting the search space. To correct for the retention time shift that occurs due to experimental factors (?) between different runs, several strategies, that employ reference peak groups from the assay library, are presented. Those methods, however, usually correct not for the false- and mis-alignments due to the common fragments observed frequently in the chromatogram. The retention time prediction that covers all such possibilities therefore remains as a challenge.
+    To relieve the exhaustive search for the targeted peptide over the entire chromatographic space, the retention time of peptides within each gradient is evaluated, thus restricting the search space. To correct for the retention time shift that occurs due to sequential runs, the traditional strategy~\cite{Roest2016Tric} is to employ a few peak groups with high abundance as reference features to align retention times of query peptides. This usually correct not for the false- and mis-alignments entirely, due to the common fragments observed frequently in the chromatogram. Covering a wider range of fragment ion spectra, however, can potentially lead to a more accurate retention time prediction, yet is nontrivial due to highly complex and composite ion spectra.
+
     
     {\bf \item Mass-to-Ion Ratio Inaccuracy}\\
     Experimental precursor and fragment ion m/z values usually differ from that of the assay library. This poses a problem as a class of peptides shares very similar m/z characteristics, hence complicating the identification of a precursor from its fragment ions, yet demanding an internal calibration solution.
     
-    {\bf \item Peak Group Identification}\\
-    Fragment ion chromatographic profiles (peak groups--features) of peptides are assessed by detecting coeluting peaks. Current methods performs an exhaustive search merely using certain precursors thus discarding substantial amount of features. Instead, feature extraction must be performed as a whole, from highly condensed chromatograms or MS/MS spectra.
+    {\bf \item Peak Group Detection}\\
+    Fragment ion chromatographic profiles (peak groups--features) of peptides are assessed by detecting coeluting peaks. Current methods performs an exhaustive search merely using certain precursors thus discarding substantial amount of features. Instead, feature extraction must be performed as a whole, from highly condensed chromatograms or SWATH--MS maps.
+    
+    {\bf \item Peptide Identification}\\
+    Qualitative assessment of coeluting fragment ion chromatographic profiles is essential to distinguish incorrect peak groups. To date, the detected peak groups are scored using the peptide library by the so-called target-decoy search\cite{Elias2010TargetDecoy}, and those deemed to be "decoy" are discarded. That is, classification of "target" and "decoy" sequences entirely relies on the current scoring strategy. Hence the peak group scoring, that is based on several characteristics such as retention time, precursor mass, multiple fragment ion masses and many others, possess a crucial role for subsequent analysis. Besides, the classification strategy will become far more sensitive to scoring error when substantial amount of peptides are of interest, yet posing a challenge for accurate identification of peak groups. 
+    
+    {\it The accurate scoring of peak groups can facilitate another use case: novelty detection. That is, the novel peptides --that match not to a peptide in the database, can be stored for further analysis by proteogenomics. Proteogenomics, a recently emerging research field at the interface of proteomics and genomics, enables detection of proteomic variations and identifications of novel peptides utilizing genomics information and transcriptomic nucleotide sequencing data, the so-called protein sequence database building~\cite{Nesvizhskii2014Proteogenomics}. To date, the protein sequence database is incomplete, i.e., records are missing as a whole. Fortunately, high throughput SWATH--MS based proteomic data analysis can substantially help to improve the completeness of query answers, by searching for the novel and/or modified peptides in the mass spectrum that are not present in reference protein sequence databases. Traditional proteogenomics methods can later integrate these new discoveries to refine gene models in genomics and transciptomics.
+    
+    % However, SWATH--MS based proteomic analysis is heavily based on exhaustive search of known entries in the database although the mass spectrum contains entire information about the mixture, i.e., features. Identification of novel peptides or protein sequences in complex mixtures, i.e., feature extraction from the entire spectra, thus remains as a challenge with the current techniques.
+    }
+    
    
     {\bf \item Protein Inference}\\
-    Assembly of peptides identified in complex mixtures into the list of proteins, commonly referred to as protein inference, is a highly challenging problem in shotgun proteomic data analysis due to common peptide or protein sequences among different protein expressions, i.e., non-injective mapping from peptides to proteins, and existence of degenerate peptides. Current strategies used by targeted approach revolve around searching for certain peptides that uniquely represent distinct proteins, which in turn ensures the existence of those proteins in the mixture. The uniqueness condition for peptides identified in a mixture, however, does not always hold. Therefore, given the reference protein sequence database, determination of proteins from a list of identified peptides --extracted features from mass spectra-- poses a classification problem.
+    Assembly of peptides identified in complex mixtures into the list of proteins, commonly referred to as protein inference, is a highly challenging problem in proteomic data analysis due to common peptide or protein sequences among different protein expressions, i.e., non-injective mapping from peptides to proteins, and existence of degenerate peptides. Current strategies used by targeted approach revolve around searching for certain peptides that uniquely represent distinct proteins, which in turn ensures the existence of those proteins in the mixture. The uniqueness condition for peptides identified in a mixture, however, does not always hold. Therefore, given the reference protein sequence database, determination of proteins from a list of identified peptides --extracted features from mass spectra-- poses a classification problem.
+   
+    {\bf \item Identification of Peptide Variance: Post-Translational Modification (PTM)}\\
+    The nature and position of any modifications, and accurate measurement of their dynamic changes between conditions, e.g., normal vs disease, or control vs. treated samples, referred to as protein post-translational modifications (PTMs) provides understanding the molecular mechanisms behind diseases and success of treatment based on the substantial patient tissue cohorts. Identifying and elucidating PTMs is thus essential, posing an anomaly detection problem on the highly complex, composite fragment ion spectra. The detected PTMs are further to be classified into categories based on existing database of protein modifications.
+    %Anomaly detection
     
-    {\bf \item  Incomplete Protein Sequence Database}\\
-    Proteogenomics, a recently emerging research field at the interface of proteomics and genomics, enables detection of proteomic variations and identifications of novel peptides utilizing genomics information and transcriptomic nucleotide sequencing data, the so-called protein sequence database building~\cite{Nesvizhskii2014Proteogenomics}. To date, the protein sequence database is incomplete, i.e., records are missing as a whole. Fortunately, high throughput mass spectrometry--based proteomic data analysis can substantially help to improve the completeness of query answers, by searching for the novel and/or modified peptides in the mass spectrum that are not present in reference protein sequence databases. Traditional proteogenomics methods can later integrate these new discoveries to refine gene models in genomics and transciptomics.
-    
-    However, the mass spectrometry--based proteomic analysis is heavily based on exhaustive search of known entries in the database although the mass spectrum contains entire information about the mixture, i.e., features. Identification of novel peptides or protein sequences in complex mixtures, i.e., feature extraction from the entire spectra, thus remains as a challenge with the current techniques. 
-    
-    {\bf \item Detection of Post-Translational Modification (PTM)}\\
-    Identifications of proteins including the nature and position of any post-translational modifications, and accurate measurement of their dynamic quantitative changes between conditions (e.g., normal vs disease, or control vs. treated samples) are of the essential of goal of proteomics. Recent technology enables this up to some extend. Upon use of more fragment-ions per precursor and more peptides, above mentioned problems will become more complicated to tackle with. More sophisticated methods are required to use more information from protein database in an efficient way.
-    
-    comprehensive understanding of the changes driving tumour initiation, progression and metastasis
-    elucidate the molecular mechanisms driving cancer
-    
-    {\bf \item Expression and Quantification of Tissue Content}\\
-    The proteomic information of substantial patient tissue cohorts coupled with the clinical findings, i.e., percentages of normal, disease cells, changes after drug treatment etc. can enable comprehensive understanding of the moleculer changes driving tumour initiation, progression and metastasis. Additionally, this database can in turn be used to characterize the complex samples without putting clinical effort facilitating to quantify temporal changes such as responsive to drug treatment and metastasis. In the mathematical context, the technical challenge here is to classify the identified protein groups (whose mapping into different classes such as normal and disease present in the current archive), and further to predict the labels of unknown protein groups --novel records for the archive. (dimensionality reduction + recommendation system --I need to be a bit more clear here)
+    % {\bf \item Expression and Quantification of Tissue Content}\\
+    % The proteomic information of substantial patient tissue cohorts coupled with the clinical findings, i.e., percentages of normal, disease cells, changes after drug treatment etc. can enable comprehensive understanding of the molecular changes driving tumour initiation, progression and metastasis. Additionally, this database can in turn be used to characterize the complex samples without putting clinical effort facilitating to quantify temporal changes such as responsive to drug treatment and metastasis. In the mathematical context, the technical challenge here is to classify the identified protein groups (whose mapping into different classes such as normal and disease present in the current archive), and further to predict the labels of unknown protein groups --novel records for the archive. (dimensionality reduction + recommendation system --I need to be a bit more clear here)
 
     {\bf \item Speeding-up High Throughput Analysis}\\   
     High scan speed is crucial to automate the analysis of complex mixtures. The typical strategy is to use larger isolation windows, which in turn leads to highly complex, composite fragment ion spectra from multiple precursors~\cite{Gillet2016MassSA}. Therefore, improvements in instrumentation to cycle faster through smaller isolation windows, while still describing the features with sufficient accuracy that facilitates the subsequent learning and generalization steps, will have very high impact for qualitative analysis of proteome content.
     %  higher dynamic range (to detect signals of cofragmenting peptides of vastly different intensit
-    
-    {\bf \item Protein Variance --Mutation}\\
-    Changes of the sequence of a protein
+
    % {\bf \item Current Software Design}\\
      
 \end{enumerate}
